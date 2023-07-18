@@ -50,4 +50,9 @@ public class MemberRepositoryImpl implements MemberRepository{
 		return Optional.empty();
 	}
 
+	@Override
+	public int getCount() {
+		return members.size(); 
+	}
+
 }

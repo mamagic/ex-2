@@ -26,7 +26,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void update(Member member) {
-		memberRepository.save(member);
+		memberRepository.update(member);
 		
 	}
 
@@ -34,6 +34,10 @@ public class MemberServiceImpl implements MemberService{
 	public void delete(String id) {
 		memberRepository.delete(id);
 		
+	}
+
+	public int getCount() {
+		return memberRepository.getCount();
 	}
 
 
