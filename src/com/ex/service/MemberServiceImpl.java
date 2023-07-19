@@ -3,11 +3,14 @@ package com.ex.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ex.domain.Member;
 import com.ex.repository.MemberRepository;
 
 public class MemberServiceImpl implements MemberService{
 	
+	@Autowired
 	MemberRepository memberRepository;
 	
 	public void setMemberRepository(MemberRepository memberRepository) {

@@ -4,55 +4,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.ex.dao.UserDaoJdbc;
 import com.ex.domain.Member;
 
 public class MemberRepositoryImpl implements MemberRepository{
 	
-	List<Member> members = new ArrayList<>();
+	//List<Member> members = new ArrayList<>();
+	@Autowired
+	UserDaoJdbc userDaojdbc;
 
 	@Override
 	public void save(Member member) {
-		members.add(member);
+		userDaojdbc.save(member);
 	}
 
 	@Override
 	public Optional<Member> find(String id) {
-		Member member = new Member();
-		member.SetId(id);
-		return findMember(member);
+		return userDaojdbc.find(id);
 	}
 
 	@Override
 	public void delete(String id) {
 		Member member = new Member();
 		member.SetId(id);
-		members.remove(findMember(member).get());
+		userDaojdbc.delete(id);
 	}
 
 	@Override
 	public void update(Member member) {
-		for(int i = 0; i < members.size(); i++) {
-			if(members.get(i).getId().equals(member.getId())){
-				members.get(i).SetName(member.getName());
-				break;
-			}
-		}
-	}
-	
-	public Optional<Member> findMember(Member member) {
-
-		for(Member item: members) {
-			if(item.getId().equals(member.getId())) {
-				return Optional.of(item);
-			}
-		}
-		
-		return Optional.empty();
+		userDaojdbc.update(member);
 	}
 
 	@Override
 	public int getCount() {
-		return members.size(); 
+		return userDaojdbc.getCount();
 	}
+	
+//	public Optional<Member> findMember(Member member) {
+//
+//		for(Member item: members) {
+//			if(item.getId().equals(member.getId())) {
+//				return Optional.of(item);
+//			}
+//		}
+//		
+//		return Optional.empty();
+//	}
+
+//	@Override
+//	public int getCount() {
+//		return members.size(); 
+//	}
 
 }
