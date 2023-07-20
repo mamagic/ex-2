@@ -2,12 +2,14 @@ package com.ex.factory;
 
 import javax.sql.DataSource;
 
+import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import com.ex.dao.UserDaoJdbc;
+import com.ex.proxy.ActionHandler;
 import com.ex.repository.MemberRepository;
 import com.ex.repository.MemberRepositoryImpl;
 import com.ex.service.MemberService;
@@ -50,5 +52,11 @@ public class BeanFactory {
 	@Bean
 	public UserDaoJdbc userDaoJdbc() {
 		return new UserDaoJdbc();
+	}
+	
+	@Bean
+	public InvocationHandler actionHandler() {
+		InvocationHandler actionHandler = new ActionHandler(memberRepository());
+		return actionHandler; 
 	}
 }

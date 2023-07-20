@@ -1,5 +1,6 @@
 package com.ex.repository;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +10,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.ex.dao.UserDaoJdbc;
 import com.ex.domain.Member;
+import com.ex.proxy.ActionHandler;
 
 public class MemberRepositoryImpl implements MemberRepository{
 	
 	//List<Member> members = new ArrayList<>();
-	@Autowired
-	UserDaoJdbc userDaojdbc;
-
+	@Autowired UserDaoJdbc userDaojdbc;
+	
 	@Override
-	public void save(Member member) {
+	public void save(Member member) throws SQLException {
 		userDaojdbc.save(member);
 	}
 
