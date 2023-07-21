@@ -11,4 +11,5 @@ public interface MemberService {
 	Optional<Member> find(String id);
 	void update(Member member);
 	void delete(String id);
+	void deleteAll();
 }

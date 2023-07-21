@@ -1,8 +1,10 @@
 package com.ex.factory;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
 import javax.sql.DataSource;
 
-import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +17,8 @@ import com.ex.repository.MemberRepositoryImpl;
 import com.ex.service.MemberService;
 import com.ex.service.MemberServiceImpl;
 
+import oracle.jdbc.datasource.OracleDataSource;
+
 @Configuration
 public class BeanFactory {
 	
@@ -22,10 +26,17 @@ public class BeanFactory {
 	public DataSource dataSource() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		
-		dataSource.setDriverClass(com.mysql.cj.jdbc.Driver.class);
-		dataSource.setUrl("jdbc:mysql://localhost:3306/sbdt_db1?characterEncoding=UTF-8");
-		dataSource.setUsername("root");
-		dataSource.setPassword("QWERzxc!@#1234");
+		//oracle
+		dataSource.setDriverClass(oracle.jdbc.driver.OracleDriver.class);
+		dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:ORCL");
+		dataSource.setUsername("c##ryu");
+		dataSource.setPassword("1234");
+		
+		//mysql
+//		dataSource.setDriverClass(com.mysql.cj.jdbc.Driver.class);
+//		dataSource.setUrl("jdbc:mysql://localhost:3306/sbdt_db1?characterEncoding=UTF-8");
+//		dataSource.setUsername("root");
+//		dataSource.setPassword("QWERzxc!@#1234");
 		
 		return dataSource;
 	}
@@ -37,9 +48,9 @@ public class BeanFactory {
 	
 	@Bean
 	public MemberService memberService() {
-		//MemberServiceImpl memberService = new MemberServiceImpl();
-		//memberService.setMemberRepository(memberRepository());
-		return new MemberServiceImpl();
+		MemberServiceImpl service = new MemberServiceImpl();
+		service.setProxyMemberRepository(new ActionHandler(memberRepository()));
+		return service;
 	}
 	
 	@Bean
@@ -54,9 +65,9 @@ public class BeanFactory {
 		return new UserDaoJdbc();
 	}
 	
-	@Bean
-	public InvocationHandler actionHandler() {
-		InvocationHandler actionHandler = new ActionHandler(memberRepository());
-		return actionHandler; 
-	}
+//	@Bean
+//	public InvocationHandler actionHandler() {
+//		InvocationHandler actionHandler = (InvocationHandler) new ActionHandler(memberRepository());
+//		return actionHandler; 
+//	}
 }

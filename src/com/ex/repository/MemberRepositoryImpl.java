@@ -43,6 +43,12 @@ public class MemberRepositoryImpl implements MemberRepository{
 	public int getCount() {
 		return userDaojdbc.getCount();
 	}
+
+	@Override
+	public void deleteAll() {
+		userDaojdbc.deleteAll();
+		
+	}
 	
 //	public Optional<Member> findMember(Member member) {
 //

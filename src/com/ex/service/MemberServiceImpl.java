@@ -1,42 +1,39 @@
 package com.ex.service;
 
+
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 
 import com.ex.domain.Member;
-import com.ex.proxy.ActionHandler;
 import com.ex.repository.MemberRepository;
 
 public class MemberServiceImpl implements MemberService{
 	
 	MemberRepository memberRepository;
-	@Autowired ActionHandler actionHandler;
 	
-	public MemberServiceImpl() {
-		
+	public void setProxyMemberRepository(InvocationHandler actionHandler) {
 		memberRepository = (MemberRepository) Proxy.newProxyInstance(
 				MemberRepository.class.getClassLoader(), 
-				,
+				new Class[] {MemberRepository.class},
 				actionHandler);
 		
 	}
 	
-	public void setMemberRepository(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-	}
+//	public void setMemberRepository(MemberRepository memberRepository) {
+//		this.memberRepository = memberRepository;
+//	}
 
 	@Override
 	public void register(Member member) {
 		try {
 			memberRepository.save(member);
-		}
-		catch(DuplicateKeyException e) {
-			System.out.println("등록과정에서 id 중복발견");
+		}catch(DuplicateKeyException e) {
+			e.printStackTrace();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,5 +60,8 @@ public class MemberServiceImpl implements MemberService{
 		return memberRepository.getCount();
 	}
 
-
+	@Override
+	public void deleteAll() {
+		memberRepository.deleteAll();
+	}
 }

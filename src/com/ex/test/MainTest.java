@@ -31,24 +31,30 @@ public class MainTest {
 
 	@Test
 	public void add() {
+		deleteAll();
 		Member m = new Member();
-		m.SetId("16");
+		m.SetId("1");
 		m.SetName("위형준3");
 		service.register(m);
 
-		assertEquals("위형준2", service.find("10").get().getName());
+		assertEquals("위형준3", service.find("1").get().getName());
 	}
 	
 	@Test
 	public void delete() {
-		service.delete("1");
-		assertEquals(service.getCount(), 14);
+		deleteAll();
+		assertEquals(service.getCount(), 0);
+	}
+	
+	@Test
+	public void deleteAll() {
+		service.deleteAll();
 	}
 	
 	@Test
 	public void update() {
 		Member m = new Member();
-		m.SetId("14");
+		m.SetId("1");
 		m.SetName("장동건");
 		
 		service.update(m);

@@ -52,4 +52,9 @@ public class UserDaoJdbc implements MemberRepository{
 		return result.get(0);
 	}
 
+	@Override
+	public void deleteAll() {
+		jdbcTemplate.update("delete from users");
+	}
+
 }
